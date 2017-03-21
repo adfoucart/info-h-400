@@ -20,9 +20,11 @@ import java.util.logging.Logger;
  */
 public class PatientController {
     
-    public static ArrayList<Patient> getAllPatients(Database db){
-        Connection conn = db.getConnection();
+    public static ArrayList<Patient> getAllPatients(Database db){        
         ArrayList<Patient> allPatients = new ArrayList();
+        
+        Connection conn = db.getConnection();
+        if( conn == null ) return allPatients;
         
         try {
             Statement s = conn.createStatement();
