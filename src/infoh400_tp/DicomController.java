@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JTree;
 
 /**
@@ -57,7 +56,7 @@ public class DicomController {
         DicomController.ddr = (DicomDirectoryRecord) tree.getLastSelectedPathComponent();
     }
 
-    static BufferedImage getImageOrNull() {
+    public static BufferedImage getImageOrNull() {
         AttributeList al = ddr.getAttributeList();
         if( al == null ) return null;
         
@@ -80,7 +79,7 @@ public class DicomController {
         return null;
     }
 
-    static String getAttributesAsString() {
+    public static String getAttributesAsString() {
         AttributeList al = ddr.getAttributeList();
         if( al == null ) return null;
         
