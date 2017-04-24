@@ -5,9 +5,15 @@
  */
 package infoh400_tp;
 
+import be.belgium.eid.eidlib.BeID;
+import be.belgium.eid.exceptions.EIDException;
 import java.awt.image.BufferedImage;
+import java.awt.Image;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -22,6 +28,7 @@ public class MainWindow extends javax.swing.JFrame {
     private DefaultListModel<String> patientModel;
     private Database db;
     private String dicomDirPath;
+    private eID idCard;
     
     /**
      * Creates new form MainWindow
@@ -34,6 +41,8 @@ public class MainWindow extends javax.swing.JFrame {
         if( db.getConnection() == null ){
            message.setText("No MySQL connection detected !");
         }
+        
+        idCard = new eID(eIDButton);
         
         patients = PatientController.getAllPatients(db);
         patientModel = new DefaultListModel();
@@ -77,6 +86,11 @@ public class MainWindow extends javax.swing.JFrame {
         dicomAttributes = new javax.swing.JTextPane();
         showImage = new javax.swing.JLabel();
         message = new javax.swing.JLabel();
+        eIDButton = new javax.swing.JButton();
+        idPicture = new javax.swing.JLabel();
+        authButton = new javax.swing.JButton();
+        passwordField = new javax.swing.JPasswordField();
+        authShow = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -145,6 +159,23 @@ public class MainWindow extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(dicomAttributes);
 
+        eIDButton.setText("eID");
+        eIDButton.setEnabled(false);
+        eIDButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eIDButtonActionPerformed(evt);
+            }
+        });
+
+        authButton.setText("Authenticate");
+        authButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                authButtonActionPerformed(evt);
+            }
+        });
+
+        authShow.setText("Not authenticated yet.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -186,9 +217,22 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(showImage, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addGap(83, 83, 83)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(authShow, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(eIDButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(authButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(idPicture)))))))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,10 +247,19 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(dateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(editPatientButton)
                     .addComponent(deletePatientButton)
-                    .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                    .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(eIDButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(idPicture)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(authButton)
+                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(authShow)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(hl7Host, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -306,24 +359,51 @@ public class MainWindow extends javax.swing.JFrame {
         
     }//GEN-LAST:event_dicomTreeValueChanged
 
+    private void eIDButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eIDButtonActionPerformed
+        idCard.retrievePatientInfo();
+
+        Patient p = idCard.p;
+        Image pic = idCard.picture;
+        firstName.setText(p.getPerson().getFirstName());
+        lastName.setText(p.getPerson().getLastName());
+        socialSecurity.setText(p.getSocialSecurity());
+        dateOfBirth.setText(p.getPerson().getDateOfBirth());
+        gender.setSelectedItem(p.getPerson().getGender());
+        idPicture.setIcon(new ImageIcon(pic));
+    }//GEN-LAST:event_eIDButtonActionPerformed
+
+    private void authButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authButtonActionPerformed
+        if( idCard.authenticate(passwordField) ){
+            authShow.setText("Authenticated");
+        }
+        else {
+            authShow.setText("Authentication failed");
+        }
+    }//GEN-LAST:event_authButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addPatientButton;
+    private javax.swing.JButton authButton;
+    private javax.swing.JLabel authShow;
     private javax.swing.JTextField dateOfBirth;
     private javax.swing.JButton deletePatientButton;
     private javax.swing.JTextPane dicomAttributes;
     private javax.swing.JTree dicomTree;
+    private javax.swing.JButton eIDButton;
     private javax.swing.JButton editPatientButton;
     private javax.swing.JTextField firstName;
     private javax.swing.JComboBox<String> gender;
     private javax.swing.JTextField hl7Host;
     private javax.swing.JTextField hl7Port;
+    private javax.swing.JLabel idPicture;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField lastName;
     private javax.swing.JLabel message;
     private javax.swing.JButton openDICOMButton;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JList<String> patientList;
     private javax.swing.JButton sendHL7Button;
     private javax.swing.JLabel showImage;
