@@ -5,15 +5,10 @@
  */
 package infoh400_tp;
 
-import be.belgium.eid.eidlib.BeID;
-import be.belgium.eid.exceptions.EIDException;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
