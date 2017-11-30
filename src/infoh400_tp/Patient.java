@@ -7,7 +7,7 @@ package infoh400_tp;
 
 /**
  *
- * @author Administrateur
+ * @author Adrien Foucart
  */
 public class Patient {
     

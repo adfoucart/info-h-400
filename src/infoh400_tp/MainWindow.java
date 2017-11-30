@@ -5,41 +5,25 @@
  */
 package infoh400_tp;
 
-import java.awt.image.BufferedImage;
-import java.awt.Image;
-import java.io.File;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 
 /**
  *
- * @author Administrateur
+ * @author Adrien Foucart
  */
 public class MainWindow extends javax.swing.JFrame {
     
     private ArrayList<Patient> patients;
     private DefaultListModel<String> patientModel;
-    private Database db;
-    private String dicomDirPath;
-    private eID idCard;
     
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
         initComponents();
-        dicomDirPath = "";
         
-        db = new Database();
-        if( db.getConnection() == null ){
-           message.setText("No MySQL connection detected !");
-        }
-        
-        idCard = new eID(eIDButton);
-        
-        patients = PatientController.getAllPatients(db);
+        patients = PatientController.getAllPatients();
         patientModel = new DefaultListModel();
         patientList.setModel(patientModel);
         updatePatientModel();
@@ -71,21 +55,12 @@ public class MainWindow extends javax.swing.JFrame {
         dateOfBirth = new javax.swing.JTextField();
         editPatientButton = new javax.swing.JButton();
         deletePatientButton = new javax.swing.JButton();
-        sendHL7Button = new javax.swing.JButton();
-        hl7Host = new javax.swing.JTextField();
-        hl7Port = new javax.swing.JTextField();
-        openDICOMButton = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        dicomTree = new javax.swing.JTree();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        dicomAttributes = new javax.swing.JTextPane();
-        showImage = new javax.swing.JLabel();
-        message = new javax.swing.JLabel();
-        eIDButton = new javax.swing.JButton();
         idPicture = new javax.swing.JLabel();
-        authButton = new javax.swing.JButton();
-        passwordField = new javax.swing.JPasswordField();
-        authShow = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,11 +71,6 @@ public class MainWindow extends javax.swing.JFrame {
         gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "M", "F" }));
 
         addPatientButton.setText("Add");
-        addPatientButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addPatientButtonActionPerformed(evt);
-            }
-        });
 
         patientList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -114,172 +84,98 @@ public class MainWindow extends javax.swing.JFrame {
         dateOfBirth.setToolTipText("date of birth");
 
         editPatientButton.setText("Edit");
-        editPatientButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editPatientButtonActionPerformed(evt);
-            }
-        });
 
         deletePatientButton.setText("Delete");
-        deletePatientButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deletePatientButtonActionPerformed(evt);
-            }
-        });
 
-        sendHL7Button.setText("HL7 Send");
-        sendHL7Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendHL7ButtonActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Last Name");
 
-        hl7Host.setText("localhost");
+        jLabel2.setText("First Name");
 
-        hl7Port.setText("52931");
+        jLabel3.setText("Gender");
 
-        openDICOMButton.setText("Open DICOM");
-        openDICOMButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openDICOMButtonActionPerformed(evt);
-            }
-        });
+        jLabel4.setText("Social Security");
 
-        dicomTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
-                dicomTreeValueChanged(evt);
-            }
-        });
-        jScrollPane2.setViewportView(dicomTree);
-
-        jScrollPane3.setViewportView(dicomAttributes);
-
-        eIDButton.setText("eID");
-        eIDButton.setEnabled(false);
-        eIDButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                eIDButtonActionPerformed(evt);
-            }
-        });
-
-        authButton.setText("Authenticate");
-        authButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                authButtonActionPerformed(evt);
-            }
-        });
-
-        authShow.setText("Not authenticated yet.");
+        jLabel5.setText("Date of Birth");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(openDICOMButton)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(sendHL7Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(hl7Host))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(hl7Port, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(socialSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(4, 4, 4)
-                        .addComponent(dateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(addPatientButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(editPatientButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deletePatientButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane3)))
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(showImage, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel5)
+                        .addGap(53, 53, 53)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lastName, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                            .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(firstName)
+                            .addComponent(dateOfBirth)
+                            .addComponent(socialSecurity))
+                        .addGap(64, 64, 64)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(idPicture)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(83, 83, 83)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(authShow, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(addPatientButton)
+                                    .addComponent(jLabel2)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(16, 16, 16)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(eIDButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(authButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(idPicture)))))))
-                .addContainerGap(34, Short.MAX_VALUE))
+                                .addComponent(editPatientButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deletePatientButton)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(addPatientButton)
-                    .addComponent(socialSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(editPatientButton)
-                    .addComponent(deletePatientButton)
-                    .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(eIDButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(idPicture)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(authButton)
-                                .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(authShow)))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(hl7Host, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(hl7Port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendHL7Button)))
-                .addGap(33, 33, 33)
-                .addComponent(openDICOMButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(showImage, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(idPicture))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(dateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(socialSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(5, 5, 5)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(addPatientButton)
+                            .addComponent(editPatientButton)
+                            .addComponent(deletePatientButton))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
-        Patient p = new Patient(socialSecurity.getText(), firstName.getText(), lastName.getText(), gender.getSelectedItem().toString(), dateOfBirth.getText());
-        patients.add(p);
-        PatientController.addPatient(db, p);
-        updatePatientModel();
-    }//GEN-LAST:event_addPatientButtonActionPerformed
 
     private void patientListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_patientListValueChanged
         int idx = patientList.getSelectedIndex();
@@ -297,111 +193,23 @@ public class MainWindow extends javax.swing.JFrame {
         dateOfBirth.setText(pat.getPerson().getDateOfBirth());
     }//GEN-LAST:event_patientListValueChanged
 
-    private void editPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPatientButtonActionPerformed
-        int idx = patientList.getSelectedIndex();
-        Patient pat = patients.get(idx);
-        
-        pat.setSocialSecurity(socialSecurity.getText());
-        pat.getPerson().setFirstName(firstName.getText());
-        pat.getPerson().setLastName(lastName.getText());
-        pat.getPerson().setGender(gender.getSelectedItem().toString());
-        pat.getPerson().setDateOfBirth(dateOfBirth.getText());
-        
-        PatientController.editPatient(db, pat);
-        updatePatientModel();
-    }//GEN-LAST:event_editPatientButtonActionPerformed
-
-    private void deletePatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePatientButtonActionPerformed
-        int idx = patientList.getSelectedIndex();
-        Patient pat = patients.get(idx);
-        
-        PatientController.deletePatient(db, pat);
-        patients.remove(pat);
-        updatePatientModel();
-    }//GEN-LAST:event_deletePatientButtonActionPerformed
-
-    private void sendHL7ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendHL7ButtonActionPerformed
-        String host = hl7Host.getText();
-        int port = Integer.valueOf(hl7Port.getText());
-        
-        int idx = patientList.getSelectedIndex();
-        if( idx < 0 ) return;
-        Patient pat = patients.get(idx);
-        
-        HL7 hl7 = new HL7(host, port);
-        hl7.send_ADT_A01(pat);
-    }//GEN-LAST:event_sendHL7ButtonActionPerformed
-
-    private void openDICOMButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openDICOMButtonActionPerformed
-        JFileChooser chooser = new JFileChooser("E:\\Dropbox\\ULB\\TPs\\2016-2017\\INFO-H-400\\Data\\DICOMDIR");
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        if( chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION ){
-            File f = chooser.getSelectedFile();
-            dicomTree.setModel(DicomController.getDICOMDIR(f.getAbsolutePath()));
-        }
-    }//GEN-LAST:event_openDICOMButtonActionPerformed
-
-    private void dicomTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_dicomTreeValueChanged
-        DicomController.selectDirectoryRecord(dicomTree);
-        
-        BufferedImage img = DicomController.getImageOrNull();
-        if( img != null ) showImage.setIcon(new ImageIcon(img));
-        
-        String s = DicomController.getAttributesAsString();
-        
-        dicomAttributes.setText(s);
-        dicomAttributes.setCaretPosition(0);
-        
-    }//GEN-LAST:event_dicomTreeValueChanged
-
-    private void eIDButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eIDButtonActionPerformed
-        idCard.retrievePatientInfo();
-
-        Patient p = idCard.p;
-        Image pic = idCard.picture;
-        firstName.setText(p.getPerson().getFirstName());
-        lastName.setText(p.getPerson().getLastName());
-        socialSecurity.setText(p.getSocialSecurity());
-        dateOfBirth.setText(p.getPerson().getDateOfBirth());
-        gender.setSelectedItem(p.getPerson().getGender());
-        idPicture.setIcon(new ImageIcon(pic));
-    }//GEN-LAST:event_eIDButtonActionPerformed
-
-    private void authButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authButtonActionPerformed
-        if( idCard.authenticate(passwordField) ){
-            authShow.setText("Authenticated");
-        }
-        else {
-            authShow.setText("Authentication failed");
-        }
-    }//GEN-LAST:event_authButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addPatientButton;
-    private javax.swing.JButton authButton;
-    private javax.swing.JLabel authShow;
     private javax.swing.JTextField dateOfBirth;
     private javax.swing.JButton deletePatientButton;
-    private javax.swing.JTextPane dicomAttributes;
-    private javax.swing.JTree dicomTree;
-    private javax.swing.JButton eIDButton;
     private javax.swing.JButton editPatientButton;
     private javax.swing.JTextField firstName;
     private javax.swing.JComboBox<String> gender;
-    private javax.swing.JTextField hl7Host;
-    private javax.swing.JTextField hl7Port;
     private javax.swing.JLabel idPicture;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField lastName;
-    private javax.swing.JLabel message;
-    private javax.swing.JButton openDICOMButton;
-    private javax.swing.JPasswordField passwordField;
     private javax.swing.JList<String> patientList;
-    private javax.swing.JButton sendHL7Button;
-    private javax.swing.JLabel showImage;
     private javax.swing.JTextField socialSecurity;
     // End of variables declaration//GEN-END:variables
 }
