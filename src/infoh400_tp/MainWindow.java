@@ -47,7 +47,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         firstName = new javax.swing.JTextField();
         lastName = new javax.swing.JTextField();
-        gender = new javax.swing.JComboBox<>();
+        gender = new javax.swing.JComboBox(Person.Gender.values());
         addPatientButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         patientList = new javax.swing.JList<>();
@@ -65,12 +65,16 @@ public class MainWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         firstName.setToolTipText("first name");
+        firstName.setName(""); // NOI18N
 
         lastName.setToolTipText("last name");
 
-        gender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "M", "F" }));
-
         addPatientButton.setText("Add");
+        addPatientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPatientButtonActionPerformed(evt);
+            }
+        });
 
         patientList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
@@ -108,16 +112,18 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addGap(53, 53, 53)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lastName, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 54, Short.MAX_VALUE))
+                            .addComponent(socialSecurity)
+                            .addComponent(lastName)
                             .addComponent(firstName)
-                            .addComponent(dateOfBirth)
-                            .addComponent(socialSecurity))
-                        .addGap(64, 64, 64)
+                            .addComponent(dateOfBirth))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 50, Short.MAX_VALUE)
                         .addComponent(idPicture)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(50, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -185,13 +191,14 @@ public class MainWindow extends javax.swing.JFrame {
         
         firstName.setText(pat.getPerson().getFirstName());
         lastName.setText(pat.getPerson().getLastName());
-        if( pat.getPerson().getGender().equalsIgnoreCase("M"))
-            gender.setSelectedIndex(0);
-        else
-            gender.setSelectedIndex(1);
+        gender.setSelectedItem(Person.Gender.valueOf(pat.getPerson().getGender()));
         socialSecurity.setText(pat.getSocialSecurity());
         dateOfBirth.setText(pat.getPerson().getDateOfBirth());
     }//GEN-LAST:event_patientListValueChanged
+
+    private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
+        
+    }//GEN-LAST:event_addPatientButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

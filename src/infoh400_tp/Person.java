@@ -10,6 +10,8 @@ package infoh400_tp;
  * @author Adrien Foucart
  */
 public class Person {
+    public enum Gender{M, F};
+    
     private int idperson;
     private String firstName;
     private String lastName;

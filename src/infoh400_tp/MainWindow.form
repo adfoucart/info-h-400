@@ -30,17 +30,20 @@
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="lastName" pref="100" max="32767" attributes="0"/>
-                          <Component id="gender" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="gender" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="54" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="socialSecurity" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lastName" max="32767" attributes="0"/>
                           <Component id="firstName" alignment="0" max="32767" attributes="0"/>
                           <Component id="dateOfBirth" alignment="0" max="32767" attributes="0"/>
-                          <Component id="socialSecurity" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="480" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" pref="50" max="32767" attributes="0"/>
                       <Component id="idPicture" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="50" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -123,6 +126,7 @@
     <Component class="javax.swing.JTextField" name="firstName">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" value="first name"/>
+        <Property name="name" type="java.lang.String" value="" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="lastName">
@@ -131,15 +135,8 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="gender">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="2">
-            <StringItem index="0" value="M"/>
-            <StringItem index="1" value="F"/>
-          </StringArray>
-        </Property>
-      </Properties>
       <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JComboBox(Person.Gender.values())"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
@@ -147,6 +144,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Add"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addPatientButtonActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>

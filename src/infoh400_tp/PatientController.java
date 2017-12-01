@@ -26,15 +26,7 @@ public class PatientController {
         return patientList;
     }
     
-    public static void addPatient(Patient p){
-        
-    }
-    
-    public static void editPatient(Patient p){
-        
-    }
-    
-    public static void deletePatient(Patient p){
+    public static void addPatient(String socialSecurity, String firstName, String lastName, String gender, String dateOfBirth){
         
     }
 }
