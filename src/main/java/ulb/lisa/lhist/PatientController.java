@@ -27,6 +27,19 @@ public class PatientController {
     }
     
     public static void addPatient(String socialSecurity, String firstName, String lastName, String gender, String dateOfBirth){
-        
+        Patient p = new Patient(Patient.last_insert_id+1, socialSecurity, new Person(Person.last_insert_id+1, firstName, lastName, gender, dateOfBirth));
+        patientList.add(p);
+    }
+
+    public static void editPatient(Patient p, String socialSecurity, String firstName, String lastName, String gender, String dateOfBirth) {
+        p.setSocialSecurity(socialSecurity);
+        p.getPerson().setFirstName(firstName);
+        p.getPerson().setLastName(lastName);
+        p.getPerson().setGender(gender);
+        p.getPerson().setDateOfBirth(dateOfBirth);
+    }
+
+    static void deletePatient(Patient p) {
+        patientList.remove(p);
     }
 }

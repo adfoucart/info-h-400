@@ -14,11 +14,14 @@ public class Patient {
     private int idpatient;
     private String socialSecurity;
     private Person person;
+    public static int last_insert_id = 0;
     
     public Patient(int idpatient, String socialSecurity, Person person) {
         this.idpatient = idpatient;
         this.socialSecurity = socialSecurity;
         this.person = person;
+        if( idpatient > this.last_insert_id )
+            this.last_insert_id = idpatient;
     }
     
     public Patient(String socialSecurity, Person person) {
@@ -39,7 +42,7 @@ public class Patient {
     
     @Override
     public String toString(){
-        return person.toString() + " - " + socialSecurity;
+        return "[ID_PAT=" + this.idpatient + "] " + person.toString() + " - " + socialSecurity;
     }
 
     public String getSocialSecurity() {

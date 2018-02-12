@@ -17,6 +17,7 @@ public class Person {
     private String lastName;
     private String gender;
     private String dateOfBirth;
+    public static int last_insert_id = 0;
     
     public Person(int idperson, String firstName, String lastName, String gender, String dateOfBirth) {
         this.idperson = idperson;
@@ -24,6 +25,9 @@ public class Person {
         this.lastName = lastName;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
+        if( idperson > this.last_insert_id ){
+            this.last_insert_id = idperson;
+        }
     }
     
     public Person(String firstName, String lastName, String gender, String dateOfBirth) {
@@ -35,7 +39,7 @@ public class Person {
     
     @Override
     public String toString(){
-        return lastName.toUpperCase() + " " + firstName + " (" + gender + ") - " + dateOfBirth;
+        return "[ID_PER=" + this.idperson + "] " + lastName.toUpperCase() + " " + firstName + " (" + gender + ") - " + dateOfBirth;
     }
 
     public String getFirstName() {
