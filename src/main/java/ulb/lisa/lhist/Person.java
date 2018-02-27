@@ -10,6 +10,11 @@ package ulb.lisa.lhist;
  * @author Adrien Foucart
  */
 public class Person {
+
+    public void setIdperson(int idperson) {
+        this.idperson = idperson;
+    }
+    
     public enum Gender{M, F};
     
     private int idperson;

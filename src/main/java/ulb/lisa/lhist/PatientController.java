@@ -14,21 +14,17 @@ import java.util.ArrayList;
 public class PatientController {
     
     private static ArrayList<Patient> patientList;
+    private static PatientDatabase db = new PatientDatabase();
     
     public static ArrayList<Patient> getAllPatients(){        
-        if( patientList == null ){
-            // Initialize patientDB
-            patientList = new ArrayList<Patient>();
-            patientList.add(new Patient(1, "AA214", new Person(3, "Christopher", "Nolan", "M", "30-07-1970")));
-            patientList.add(new Patient(2, "OR184", new Person(1, "Jodie", "Foster", "F", "19-11-1962")));
-            patientList.add(new Patient(3, "CQ556", new Person(2, "Robert", "Zemeckis", "M", "14-05-1952")));
-        }
+        patientList = db.getAllPatients();
         return patientList;
     }
     
     public static void addPatient(String socialSecurity, String firstName, String lastName, String gender, String dateOfBirth){
         Patient p = new Patient(Patient.last_insert_id+1, socialSecurity, new Person(Person.last_insert_id+1, firstName, lastName, gender, dateOfBirth));
         patientList.add(p);
+        db.addPatient(p);
     }
 
     public static void editPatient(Patient p, String socialSecurity, String firstName, String lastName, String gender, String dateOfBirth) {
@@ -37,9 +33,11 @@ public class PatientController {
         p.getPerson().setLastName(lastName);
         p.getPerson().setGender(gender);
         p.getPerson().setDateOfBirth(dateOfBirth);
+        db.editPatient(p);
     }
 
     static void deletePatient(Patient p) {
         patientList.remove(p);
+        db.deletePatient(p);
     }
 }

@@ -65,4 +65,7 @@ public class Patient {
         this.person = person;
     }
     
+    public void setIdpatient(int idpatient) {
+        this.idpatient = idpatient;
+    }
 }
