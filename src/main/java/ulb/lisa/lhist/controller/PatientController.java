@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ulb.lisa.lhist;
+package ulb.lisa.lhist.controller;
 
+import ulb.lisa.lhist.model.Person;
+import ulb.lisa.lhist.model.Patient;
 import java.util.ArrayList;
+import ulb.lisa.lhist.database.PatientDatabase;
 
 /**
  *
@@ -36,7 +39,7 @@ public class PatientController {
         db.editPatient(p);
     }
 
-    static void deletePatient(Patient p) {
+    public static void deletePatient(Patient p) {
         patientList.remove(p);
         db.deletePatient(p);
     }

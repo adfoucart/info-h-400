@@ -3,7 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ulb.lisa.lhist;
+package ulb.lisa.lhist.model;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -73,6 +78,11 @@ public class Person {
 
     public String getDateOfBirth() {
         return dateOfBirth;
+    }
+    
+    public Date getDateOfBirthAsDate() throws ParseException {
+        DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        return fmt.parse(dateOfBirth);
     }
 
     public void setDateOfBirth(String dateOfBirth) {

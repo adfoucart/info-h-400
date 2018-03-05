@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ulb.lisa.lhist;
+package ulb.lisa.lhist.view;
 
+import ulb.lisa.lhist.controller.UserController;
+import ulb.lisa.lhist.controller.HL7Client;
+import ulb.lisa.lhist.controller.PatientController;
+import ulb.lisa.lhist.model.Person;
+import ulb.lisa.lhist.model.Patient;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 
@@ -65,6 +70,7 @@ public class MainWindow extends javax.swing.JFrame {
         username = new javax.swing.JTextField();
         password = new javax.swing.JPasswordField();
         authenticateButton = new javax.swing.JButton();
+        admissionButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -126,13 +132,20 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        admissionButton.setText("Admission");
+        admissionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                admissionButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(isAuthenticated, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -141,7 +154,8 @@ public class MainWindow extends javax.swing.JFrame {
                         .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(authenticateButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(250, 250, 250)
+                        .addComponent(admissionButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -171,10 +185,10 @@ public class MainWindow extends javax.swing.JFrame {
                                         .addComponent(firstName))
                                     .addComponent(dateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(idPicture)
-                        .addContainerGap(16, Short.MAX_VALUE))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(idPicture)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +231,8 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(isAuthenticated)
                     .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(authenticateButton))
+                    .addComponent(authenticateButton)
+                    .addComponent(admissionButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -271,9 +286,18 @@ public class MainWindow extends javax.swing.JFrame {
         
     }//GEN-LAST:event_authenticateButtonActionPerformed
 
+    private void admissionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_admissionButtonActionPerformed
+        int idx = patientList.getSelectedIndex();
+        if( idx < 0 ) return;
+        
+        Patient p = patients.get(idx);
+        HL7Client.send_ADT_A01(p);
+    }//GEN-LAST:event_admissionButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addPatientButton;
+    private javax.swing.JButton admissionButton;
     private javax.swing.JButton authenticateButton;
     private javax.swing.JTextField dateOfBirth;
     private javax.swing.JButton deletePatientButton;

@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ulb.lisa.lhist;
+package ulb.lisa.lhist.controller;
+
+import ulb.lisa.lhist.database.UserDatabase;
+import ulb.lisa.lhist.model.User;
 
 /**
  *

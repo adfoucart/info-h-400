@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ulb.lisa.lhist;
+package ulb.lisa.lhist.database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Adrien Foucart
  */
-class UserDatabase {
+public class UserDatabase {
     
     private Connection conn = null;
     
