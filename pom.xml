@@ -26,5 +26,10 @@
             <artifactId>hapi-structures-v23</artifactId>
             <version>2.3</version>
         </dependency>
-   </dependencies>
+        <dependency>
+            <groupId>pixelmed</groupId>
+            <artifactId>pixelmed-java</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 </project>

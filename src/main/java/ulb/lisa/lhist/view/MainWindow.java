@@ -5,6 +5,8 @@
  */
 package ulb.lisa.lhist.view;
 
+import java.awt.Image;
+import java.io.File;
 import ulb.lisa.lhist.controller.UserController;
 import ulb.lisa.lhist.controller.HL7Client;
 import ulb.lisa.lhist.controller.PatientController;
@@ -12,6 +14,10 @@ import ulb.lisa.lhist.model.Person;
 import ulb.lisa.lhist.model.Patient;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.tree.TreeModel;
+import ulb.lisa.lhist.controller.DicomController;
 
 /**
  *
@@ -21,12 +27,16 @@ public class MainWindow extends javax.swing.JFrame {
     
     private ArrayList<Patient> patients;
     private DefaultListModel<String> patientModel;
+    private JFileChooser fc;
+    private TreeModel ddrModel;
+    private String dicomDirPath = "";
     
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
         initComponents();
+        fc = new JFileChooser("E:/Dropbox/ULB/TPs/INFOH400/Data/DICOMDIR");
         
         patients = PatientController.getAllPatients();
         patientModel = new DefaultListModel();
@@ -71,6 +81,12 @@ public class MainWindow extends javax.swing.JFrame {
         password = new javax.swing.JPasswordField();
         authenticateButton = new javax.swing.JButton();
         admissionButton = new javax.swing.JButton();
+        selectDicomdirButton = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        dicomTree = new javax.swing.JTree();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        dicomText = new javax.swing.JTextPane();
+        dicomImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -139,56 +155,85 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        selectDicomdirButton.setText("Select DICOMDIR");
+        selectDicomdirButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectDicomdirButtonActionPerformed(evt);
+            }
+        });
+
+        dicomTree.setModel(ddrModel);
+        dicomTree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                dicomTreeValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(dicomTree);
+
+        jScrollPane3.setViewportView(dicomText);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(isAuthenticated, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(authenticateButton)
-                        .addGap(250, 250, 250)
-                        .addComponent(admissionButton))
+                        .addComponent(selectDicomdirButton)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(addPatientButton)
-                                    .addComponent(jLabel2)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(16, 16, 16)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(editPatientButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deletePatientButton))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel4))
-                                .addGap(45, 45, 45)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(socialSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(0, 54, Short.MAX_VALUE))
-                                        .addComponent(lastName)
-                                        .addComponent(firstName))
-                                    .addComponent(dateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(idPicture)
-                .addContainerGap(14, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel1)
+                                            .addComponent(addPatientButton)
+                                            .addComponent(jLabel2)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addGap(16, 16, 16)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(editPatientButton)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(deletePatientButton))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel4))
+                                        .addGap(45, 45, 45)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(socialSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(0, 54, Short.MAX_VALUE))
+                                                .addComponent(lastName)
+                                                .addComponent(firstName))
+                                            .addComponent(dateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(isAuthenticated, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(authenticateButton)
+                                .addGap(250, 250, 250)
+                                .addComponent(admissionButton)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                        .addComponent(idPicture)
+                        .addContainerGap(120, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dicomImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,7 +278,15 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(authenticateButton)
                     .addComponent(admissionButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(selectDicomdirButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(dicomImage, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addGap(23, 23, 23))
         );
 
         pack();
@@ -294,6 +347,31 @@ public class MainWindow extends javax.swing.JFrame {
         HL7Client.send_ADT_A01(p);
     }//GEN-LAST:event_admissionButtonActionPerformed
 
+    private void selectDicomdirButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectDicomdirButtonActionPerformed
+        int returnValue = fc.showOpenDialog(null);
+        
+        if( returnValue == JFileChooser.APPROVE_OPTION ){
+            File selectedFile = fc.getSelectedFile();
+            dicomDirPath = selectedFile.getAbsolutePath();
+            
+            ddrModel = DicomController.getDICOMDIR(selectedFile);
+            dicomTree.setModel(ddrModel);
+        }
+    }//GEN-LAST:event_selectDicomdirButtonActionPerformed
+
+    private void dicomTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_dicomTreeValueChanged
+        
+        String attributes = DicomController.getAttributes(dicomTree.getLastSelectedPathComponent());
+        dicomText.setText(attributes);
+        
+        Image img = DicomController.getImage(dicomTree.getLastSelectedPathComponent(), dicomDirPath);
+        System.out.println(img);
+        if( img != null ){
+            ImageIcon icon = new ImageIcon(img);
+            dicomImage.setIcon(icon);
+        }
+    }//GEN-LAST:event_dicomTreeValueChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addPatientButton;
@@ -301,6 +379,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton authenticateButton;
     private javax.swing.JTextField dateOfBirth;
     private javax.swing.JButton deletePatientButton;
+    private javax.swing.JLabel dicomImage;
+    private javax.swing.JTextPane dicomText;
+    private javax.swing.JTree dicomTree;
     private javax.swing.JButton editPatientButton;
     private javax.swing.JTextField firstName;
     private javax.swing.JComboBox<String> gender;
@@ -312,9 +393,12 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField lastName;
     private javax.swing.JPasswordField password;
     private javax.swing.JList<String> patientList;
+    private javax.swing.JButton selectDicomdirButton;
     private javax.swing.JTextField socialSecurity;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
