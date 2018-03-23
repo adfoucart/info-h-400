@@ -30,6 +30,7 @@ public class PatientDatabase {
     
     public ArrayList<Patient> getAllPatients(){
         ArrayList<Patient> patients = new ArrayList();
+        if( conn == null ) return patients;
         try {
             Statement s = conn.createStatement();
             s.executeQuery("SELECT pat.idpatient, pat.socialSecurity, per.idperson, per.firstName, per.lastName, per.dateOfBirth, per.gender FROM patient pat LEFT JOIN person per ON per.idperson = pat.idperson");
@@ -57,6 +58,7 @@ public class PatientDatabase {
     }
     
     public void addPatient(Patient pat){
+        if( conn == null ) return;
         try {
             conn.setAutoCommit(false);
             PreparedStatement s = conn.prepareStatement("INSERT INTO person(firstName, lastName, dateOfBirth, gender) VALUES(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -98,6 +100,7 @@ public class PatientDatabase {
     }
     
     public void editPatient(Patient pat){
+        if( conn == null ) return;
         try {
             PreparedStatement s = conn.prepareStatement("UPDATE person SET firstName = ?, lastName = ?, gender = ?, dateOfBirth = ? WHERE idperson = ?");
             s.setString(1, pat.getPerson().getFirstName());
@@ -119,6 +122,7 @@ public class PatientDatabase {
     }
 
     public void deletePatient(Patient pat){
+        if( conn == null ) return;
         try {
             PreparedStatement s = conn.prepareStatement("DELETE FROM patient WHERE idpatient = ?");
             s.setInt(1, pat.getIdpatient());

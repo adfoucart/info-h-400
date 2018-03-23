@@ -25,6 +25,7 @@ public class UserDatabase {
     }
 
     public boolean authenticate(String username, String password) {
+        if( conn == null ) return false;
         try {
             PreparedStatement s = conn.prepareStatement("SELECT username FROM user WHERE username = ? AND password = SHA1(?)");
             s.setString(1, username);

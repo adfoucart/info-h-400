@@ -10,8 +10,11 @@ import com.pixelmed.dicom.DicomDirectory;
 import com.pixelmed.dicom.DicomDirectoryRecord;
 import com.pixelmed.dicom.DicomException;
 import com.pixelmed.dicom.DicomInputStream;
+import com.pixelmed.dicom.SOPClass;
 import com.pixelmed.dicom.TagFromName;
 import com.pixelmed.display.SourceImage;
+import com.pixelmed.network.DicomNetworkException;
+import com.pixelmed.network.StorageSOPClassSCU;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -64,6 +67,24 @@ public class DicomController {
         }
         
         return img;
+    }
+
+    public static void storeDICOM(Object lastSelectedPathComponent, String dicomDirPath, String host, int port, String aetitle) {
+        DicomDirectoryRecord ddr = (DicomDirectoryRecord) lastSelectedPathComponent;
+        
+        if( ddr.getAttributeList().get(TagFromName.DirectoryRecordType).getSingleStringValueOrEmptyString().equals("IMAGE") ){
+            String path = ddr.getAttributeList().get(TagFromName.ReferencedFileID).getDelimitedStringValuesOrNull();
+            if( path != null ){
+                String fullPath = dicomDirPath.replace("dicomdir","") + path;
+                AttributeList al = new AttributeList();
+                try {
+                    al.read(new DicomInputStream(new File(fullPath)));
+                    new StorageSOPClassSCU(host, port, aetitle, "JAVA", fullPath, SOPClass.MRImageStorage, al.get(TagFromName.SOPInstanceUID).getSingleStringValueOrEmptyString(), 0);
+                } catch (IOException | DicomException | DicomNetworkException ex) {
+                    Logger.getLogger(DicomController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
     
 }
