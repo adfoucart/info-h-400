@@ -16,7 +16,12 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.tree.TreeModel;
+import ulb.lisa.lhist.controller.BeIDController;
 import ulb.lisa.lhist.controller.DicomController;
 
 /**
@@ -93,6 +98,9 @@ public class MainWindow extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         dicom_port = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        eIDButton = new javax.swing.JButton();
+        photoLabel = new javax.swing.JLabel();
+        eIDAuthButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -195,6 +203,20 @@ public class MainWindow extends javax.swing.JFrame {
 
         jLabel7.setText(":");
 
+        eIDButton.setText("Load from eID");
+        eIDButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eIDButtonActionPerformed(evt);
+            }
+        });
+
+        eIDAuthButton.setText("ID Authenticate");
+        eIDAuthButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eIDAuthButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -242,11 +264,17 @@ public class MainWindow extends javax.swing.JFrame {
                                 .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(authenticateButton)
-                                .addGap(250, 250, 250)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(eIDAuthButton)
+                                .addGap(92, 92, 92)
+                                .addComponent(eIDButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(admissionButton)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(photoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(idPicture)
-                        .addContainerGap(120, Short.MAX_VALUE))
+                        .addGap(106, 106, 106))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -277,44 +305,48 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(idPicture))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(socialSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(dateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(5, 5, 5)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(addPatientButton)
-                            .addComponent(editPatientButton)
-                            .addComponent(deletePatientButton))))
+                    .addComponent(photoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane1)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1))
+                            .addGap(6, 6, 6)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(gender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(10, 10, 10)
+                                    .addComponent(idPicture))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel4)
+                                        .addComponent(socialSecurity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5)
+                                .addComponent(dateOfBirth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(5, 5, 5)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(addPatientButton)
+                                .addComponent(editPatientButton)
+                                .addComponent(deletePatientButton)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(isAuthenticated)
                     .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(authenticateButton)
-                    .addComponent(admissionButton))
+                    .addComponent(admissionButton)
+                    .addComponent(eIDButton)
+                    .addComponent(eIDAuthButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(selectDicomdirButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -340,12 +372,7 @@ public class MainWindow extends javax.swing.JFrame {
         if( idx < 0 ) return;
         
         Patient pat = patients.get(idx);
-        
-        firstName.setText(pat.getPerson().getFirstName());
-        lastName.setText(pat.getPerson().getLastName());
-        gender.setSelectedItem(Person.Gender.valueOf(pat.getPerson().getGender()));
-        socialSecurity.setText(pat.getSocialSecurity());
-        dateOfBirth.setText(pat.getPerson().getDateOfBirth());
+        fillPatientForm(pat);
     }//GEN-LAST:event_patientListValueChanged
 
     private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
@@ -419,6 +446,46 @@ public class MainWindow extends javax.swing.JFrame {
         DicomController.storeDICOM(dicomTree.getLastSelectedPathComponent(), dicomDirPath, dicom_host.getText(), Integer.valueOf(dicom_port.getText()), dicom_calledAET.getText());
     }//GEN-LAST:event_sendDicomButtonActionPerformed
 
+    private void eIDButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eIDButtonActionPerformed
+        Patient pat = BeIDController.readID();
+        
+        if(pat != null){
+            fillPatientForm(pat);
+            
+            photoLabel.setIcon(new ImageIcon(BeIDController.photo));
+        }
+    }//GEN-LAST:event_eIDButtonActionPerformed
+
+    private void fillPatientForm(Patient pat){
+        firstName.setText(pat.getPerson().getFirstName());
+        lastName.setText(pat.getPerson().getLastName());
+        gender.setSelectedItem(Person.Gender.valueOf(pat.getPerson().getGender()));
+        socialSecurity.setText(pat.getSocialSecurity());
+        dateOfBirth.setText(pat.getPerson().getDateOfBirth());
+    }
+    
+    private void eIDAuthButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eIDAuthButtonActionPerformed
+        JPanel pinPanel = new JPanel();
+        JLabel pinLabel = new JLabel("Enter PIN code");
+        JPasswordField pinCodeField = new JPasswordField(4);
+        pinPanel.add(pinLabel);
+        pinPanel.add(pinCodeField);
+        String[] options = new String[]{"OK", "Cancel"};
+        
+        int option = JOptionPane.showOptionDialog(null, pinPanel, "PIN Challenge", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
+        
+        if( option == 0 ){
+            String user = BeIDController.authenticate(new String(pinCodeField.getPassword()));
+            if( user != null ){
+                isAuthenticated.setText("eID = " + user);
+            }
+            else {
+                isAuthenticated.setText("eID authentication failed");
+            }
+        }
+        
+    }//GEN-LAST:event_eIDAuthButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addPatientButton;
@@ -432,6 +499,8 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField dicom_calledAET;
     private javax.swing.JTextField dicom_host;
     private javax.swing.JTextField dicom_port;
+    private javax.swing.JButton eIDAuthButton;
+    private javax.swing.JButton eIDButton;
     private javax.swing.JButton editPatientButton;
     private javax.swing.JTextField firstName;
     private javax.swing.JComboBox<String> gender;
@@ -450,6 +519,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField lastName;
     private javax.swing.JPasswordField password;
     private javax.swing.JList<String> patientList;
+    private javax.swing.JLabel photoLabel;
     private javax.swing.JButton selectDicomdirButton;
     private javax.swing.JButton sendDicomButton;
     private javax.swing.JTextField socialSecurity;
