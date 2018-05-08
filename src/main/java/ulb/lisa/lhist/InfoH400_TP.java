@@ -5,6 +5,7 @@
  */
 package ulb.lisa.lhist;
 
+import ulb.lisa.lhist.database.PatientDatabase;
 import ulb.lisa.lhist.view.MainWindow;
 
 /**
@@ -40,7 +41,7 @@ public class InfoH400_TP {
             java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>        
-            
+       
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

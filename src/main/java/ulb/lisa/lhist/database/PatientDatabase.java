@@ -28,6 +28,35 @@ public class PatientDatabase {
         this.conn = Database.getInstance().getConnection();
     }
     
+    public Patient getPatient(int id){
+        Patient return_patient = null;
+        
+        if( conn == null ) return return_patient;
+        try {
+            PreparedStatement s = conn.prepareStatement("SELECT pat.idpatient, pat.socialSecurity, per.idperson, per.firstName, per.lastName, per.dateOfBirth, per.gender FROM patient pat LEFT JOIN person per ON per.idperson = pat.idperson WHERE pat.idpatient = ?");
+            s.setInt(1, id);
+            ResultSet rs = s.executeQuery();
+
+            while(rs.next()){
+                int idpatient = rs.getInt("idpatient");
+                String socialSecurity = rs.getString("socialSecurity");
+                int idperson = rs.getInt("idperson");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String dateOfBirth = rs.getString("dateOfBirth");
+                String gender = rs.getString("gender");
+                
+                return_patient = new Patient(idpatient, socialSecurity, new Person(idperson, firstName, lastName, gender, dateOfBirth));
+            }
+            rs.close();
+            s.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return return_patient;
+    }
+    
     public ArrayList<Patient> getAllPatients(){
         ArrayList<Patient> patients = new ArrayList();
         if( conn == null ) return patients;
